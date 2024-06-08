@@ -1,5 +1,6 @@
 package com.example.initRoute.controller;
 
+import com.example.initRoute.security.AuthRequest;
 import com.example.initRoute.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +16,10 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/init")
-    public Map<String, String> authenticate(@RequestParam String username, @RequestParam String password) {
+    public Map<String, String> authenticate(@RequestBody AuthRequest request) {
         Map<String, String> response = new HashMap<>();
         try {
-            String token = authService.authenticate(username, password);
+            String token = authService.authenticate(request.getUsername(), request.getPassword());
             response.put("token", token);
         } catch (Exception e) {
             response.put("error", e.getMessage());
